@@ -16,7 +16,7 @@ type GButton struct {
 	textPos    Vec2
 	minX, minY int
 	maxX, maxY int
-	x, y       float64
+	x, y       float64 // TODO: maybe do this vec2? not sure..
 	font       *GFont
 	tex        *ebiten.Image
 	onClick    GButtonClick
@@ -67,7 +67,7 @@ func NewButtonNoCheck(text string, x, y float64, tex *ebiten.Image, font *GFont,
 	height := math.Max(metrics.XHeight, metrics.CapHeight)
 
 	textX := (float64(texBounds.Dx()) - strWidth) / 2.0
-	textY := (float64(texBounds.Dy()) - strHeight - height) / 2.0
+	textY := (float64(texBounds.Dy()) + strHeight + height) / 2.0
 
 	// float to int can be expensive, probably micro, but might aswell
 	intX := int(x)
