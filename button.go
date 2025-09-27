@@ -11,20 +11,20 @@ import (
 type GButtonClick func()
 
 type GButton struct {
-	text    string
-	textPos Vec2
-	x       int
-	y       int
-	font    *GFont
-	tex     *ebiten.Image
-	onClick GButtonClick
+	text        string
+	textPos     Vec2
+	clickBounds Vec2
+	x, y        float64
+	font        *GFont
+	tex         *ebiten.Image
+	onClick     GButtonClick
 }
 
 // TODO: semi dupe code between these, but would end up measuring twice if i did bounds check then called NewButtonNoCheck
 
 // NewButton checks that the string fits within the texture then return a new GButton, if you don't want bounds checks
 // you can use NewButtonNoCheck
-func NewButton(text string, x, y int, tex *ebiten.Image, font *GFont, onClick GButtonClick) (*GButton, error) {
+func NewButton(text string, x, y float64, tex *ebiten.Image, font *GFont, onClick GButtonClick) (*GButton, error) {
 	strWidth, strHeight := font.MeasureString(text)
 	texBounds := tex.Bounds()
 	if strWidth >= float64(texBounds.Dx()) || strHeight >= float64(texBounds.Dy()) {
@@ -34,14 +34,8 @@ func NewButton(text string, x, y int, tex *ebiten.Image, font *GFont, onClick GB
 	metrics := font.face.Metrics()
 	height := math.Max(metrics.XHeight, metrics.CapHeight)
 
-	fmt.Println(strHeight)
-	fmt.Println(texBounds.Dy())
-	fmt.Println(height)
-
 	textX := (float64(texBounds.Dx()) - strWidth) / 2.0
 	textY := (float64(texBounds.Dy()) + strHeight + height) / 2.0
-
-	fmt.Println(textY)
 
 	return &GButton{
 		text:    text,
@@ -55,7 +49,7 @@ func NewButton(text string, x, y int, tex *ebiten.Image, font *GFont, onClick GB
 }
 
 // NewButtonNoCheck builds a GButton without checking bounds of string against texture
-func NewButtonNoCheck(text string, x, y int, tex *ebiten.Image, font *GFont, onClick GButtonClick) *GButton {
+func NewButtonNoCheck(text string, x, y float64, tex *ebiten.Image, font *GFont, onClick GButtonClick) *GButton {
 	strWidth, strHeight := font.MeasureString(text)
 	texBounds := tex.Bounds()
 
@@ -84,7 +78,7 @@ func (gb *GButton) Update() {
 func (gb *GButton) Draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
 
-	op.GeoM.Translate(float64(gb.x), float64(gb.y))
+	op.GeoM.Translate(gb.x, gb.y)
 	op.DisableMipmaps = true
 
 	tOp := &text.DrawOptions{}
