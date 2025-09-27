@@ -89,7 +89,7 @@ func (gt *GTextbox) Update() {
 	}
 
 	if gt.focused && len(gt.text) > 0 && inpututil.IsKeyJustPressed(ebiten.KeyBackspace) {
-		gt.text = gt.text[gt.caretPos : gt.caretPos-1]
+		gt.text = append(gt.text[:gt.caretPos-1], gt.text[gt.caretPos:]...)
 		gt.caretPos--
 	}
 
