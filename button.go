@@ -30,7 +30,7 @@ func NewButton(text string, x, y float64, tex *ebiten.Image, font *GFont, onClic
 	strWidth, strHeight := font.MeasureString(text)
 	texBounds := tex.Bounds()
 	if strWidth >= float64(texBounds.Dx()) || strHeight >= float64(texBounds.Dy()) {
-		return nil, fmt.Errorf("string %s does not fit within texture")
+		return nil, fmt.Errorf("string %s does not fit within texture", text)
 	}
 
 	metrics := font.face.Metrics()
