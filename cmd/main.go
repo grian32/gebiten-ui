@@ -10,9 +10,14 @@ import (
 )
 
 var btn *gebitenui.GButton
+var textbox *gebitenui.GTextbox
 
 func init() {
 	btnTex, _, err := ebitenutil.NewImageFromFile("../testdata/btn.png")
+	if err != nil {
+		log.Fatalln(err)
+	}
+	textboxTex, _, err := ebitenutil.NewImageFromFile("../testdata/textbox.png")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -25,12 +30,11 @@ func init() {
 	gbtn, err := gebitenui.NewButton("Press Me!", 0, 20, btnTex, fnt, func() {
 		log.Println("Hello!")
 	})
-
 	if err != nil {
 		log.Fatalln(err)
 	}
-
 	btn = gbtn
+	textbox = gebitenui.NewTextBox(20, 200, 12, textboxTex, fnt)
 }
 
 type Test struct {
@@ -38,12 +42,14 @@ type Test struct {
 
 func (t *Test) Update() error {
 	btn.Update()
+	textbox.Update()
 	return nil
 }
 
 func (t *Test) Draw(screen *ebiten.Image) {
 	ebitenutil.DebugPrint(screen, "Hello, World!")
 	btn.Draw(screen)
+	textbox.Draw(screen)
 }
 
 func (t *Test) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
