@@ -1,9 +1,10 @@
 package main
 
 import (
-	gebitenui "gebiten-ui"
 	_ "image/png"
 	"log"
+
+	gebitenui "github.com/grian32/gebiten-ui"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
