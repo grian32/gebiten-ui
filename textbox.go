@@ -64,33 +64,45 @@ func NewTextBox(x, y float64, maxTextLen int, tex *ebiten.Image, font *GFont, te
 }
 
 func (gt *GTextbox) Update() {
-	if gt.focused && len(gt.text) < gt.maxTextLen && gt.caretPos >= 0 {
-		newText := ebiten.AppendInputChars(nil)
+	if gt.focused {
+		if len(gt.text) < gt.maxTextLen && gt.caretPos >= 0 {
+			newText := ebiten.AppendInputChars(nil)
 
-		if len(newText) > 0 {
-			tmp := make([]rune, 0, len(gt.text)+len(newText))
-			tmp = append(tmp, gt.text[:gt.caretPos]...)
-			tmp = append(tmp, newText...)
-			tmp = append(tmp, gt.text[gt.caretPos:]...)
-			gt.text = tmp
-			gt.caretPos += len(newText)
+			if len(newText) > 0 {
+				tmp := make([]rune, 0, len(gt.text)+len(newText))
+				tmp = append(tmp, gt.text[:gt.caretPos]...)
+				tmp = append(tmp, newText...)
+				tmp = append(tmp, gt.text[gt.caretPos:]...)
+				gt.text = tmp
+				gt.caretPos += len(newText)
+			}
 		}
-	}
 
-	if gt.focused && len(gt.text) != 0 {
-		_, strHeight := gt.font.MeasureString(string(gt.text))
-		texBounds := gt.tex.Bounds()
-		gt.textY = gt.textOffsetY + (float64(texBounds.Dy())-strHeight)/2.0
+		if len(gt.text) != 0 {
+			_, strHeight := gt.font.MeasureString(string(gt.text))
+			texBounds := gt.tex.Bounds()
+			gt.textY = gt.textOffsetY + (float64(texBounds.Dy())-strHeight)/2.0
 
-		strWidthCaret, _ := gt.font.MeasureString(string(gt.text[:gt.caretPos]))
-		gt.caretX = gt.textOffsetX + strWidthCaret
+			strWidthCaret, _ := gt.font.MeasureString(string(gt.text[:gt.caretPos]))
+			gt.caretX = gt.textOffsetX + strWidthCaret
 
-		//gt.textPos = Vec2{X: gt.x + textX, Y: gt.y + textY}
-	}
+			//gt.textPos = Vec2{X: gt.x + textX, Y: gt.y + textY}
+		}
 
-	if gt.focused && len(gt.text) > 0 && inpututil.IsKeyJustPressed(ebiten.KeyBackspace) {
-		gt.text = append(gt.text[:gt.caretPos-1], gt.text[gt.caretPos:]...)
-		gt.caretPos--
+		if len(gt.text) > 0 && inpututil.IsKeyJustPressed(ebiten.KeyBackspace) {
+			gt.text = append(gt.text[:gt.caretPos-1], gt.text[gt.caretPos:]...)
+			gt.caretPos--
+		}
+
+		if gt.caretPos > 0 && inpututil.IsKeyJustPressed(ebiten.KeyLeft) {
+			gt.caretPos--
+		}
+		if gt.caretPos < len(gt.text) && inpututil.IsKeyJustPressed(ebiten.KeyRight) {
+			gt.caretPos++
+		}
+
+		gt.caretCurrTickCount = gt.caretCurrTickCount % 30
+		gt.caretCurrTickCount++
 	}
 
 	if inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
@@ -100,18 +112,6 @@ func (gt *GTextbox) Update() {
 		} else if gt.focused {
 			gt.focused = false
 		}
-	}
-
-	if gt.focused && gt.caretPos > 0 && inpututil.IsKeyJustPressed(ebiten.KeyLeft) {
-		gt.caretPos--
-	}
-	if gt.focused && gt.caretPos < len(gt.text) && inpututil.IsKeyJustPressed(ebiten.KeyRight) {
-		gt.caretPos++
-	}
-
-	if gt.focused {
-		gt.caretCurrTickCount = gt.caretCurrTickCount % 30
-		gt.caretCurrTickCount++
 	}
 }
 
