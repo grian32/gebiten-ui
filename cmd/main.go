@@ -27,14 +27,14 @@ func init() {
 		log.Fatalln(err)
 	}
 
-	gbtn, err := gebitenui.NewButton("Press Me!", 0, 20, btnTex, fnt, func() {
+	btn, err = gebitenui.NewButton("Press Me!", 0, 20, btnTex, fnt, func() {
 		log.Println("Hello!")
 	})
 	if err != nil {
 		log.Fatalln(err)
 	}
-	btn = gbtn
-	textbox = gebitenui.NewTextBox(20, 200, 12, textboxTex, fnt)
+
+	textbox = gebitenui.NewTextBox(20, 200, 12, textboxTex, fnt, 15.0, 0.0)
 }
 
 type Test struct {
