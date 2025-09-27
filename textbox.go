@@ -89,7 +89,7 @@ func (gt *GTextbox) Update() {
 			//gt.textPos = Vec2{X: gt.x + textX, Y: gt.y + textY}
 		}
 
-		if len(gt.text) > 0 && inpututil.IsKeyJustPressed(ebiten.KeyBackspace) {
+		if len(gt.text) > 0 && gt.caretPos > 0 && inpututil.IsKeyJustPressed(ebiten.KeyBackspace) {
 			gt.text = append(gt.text[:gt.caretPos-1], gt.text[gt.caretPos:]...)
 			gt.caretPos--
 		}
