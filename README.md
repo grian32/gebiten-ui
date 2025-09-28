@@ -1,12 +1,13 @@
 # gebiten-ui
 
-`gebiten-ui` is a small UI library for Ebitengine. It currently provides a `GButton` and `GTextbox`, plus a thing `GFont` wrapper around Ebitengine's text rendering meant to be used inside the library.
+`gebiten-ui` is a small UI library for Ebitengine. It currently provides a `GButton` and `GTextbox`, plus a thing `GFont` wrapper around Ebitengine's text rendering.
 
 ## Features
 
 - Common `GWidget` interface.
 - `GButton` with click handling and automatically centered label.
 - `GTextbox`, a single line textbox with focus, caret, text editing and y-axis centering.
+- `GFont`, a utility wrapper for drawing text.
 
 ## Usage
 

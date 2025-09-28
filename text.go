@@ -1,6 +1,7 @@
 package gebiten_ui
 
 import (
+	"image/color"
 	"os"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -41,8 +42,9 @@ func (gf *GFont) MeasureString(msg string) (float64, float64) {
 	return text.Measure(msg, gf.face, 1)
 }
 
-func (gf *GFont) Draw(screen *ebiten.Image, msg string, x, y float64) {
+func (gf *GFont) Draw(screen *ebiten.Image, msg string, x, y float64, color color.Color) {
 	op := &text.DrawOptions{}
 	op.GeoM.Translate(x, y)
+	op.ColorScale.ScaleWithColor(color)
 	text.Draw(screen, msg, gf.face, op)
 }
