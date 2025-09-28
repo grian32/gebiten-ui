@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	_ "image/png"
 	"log"
 
@@ -35,7 +36,9 @@ func init() {
 		log.Fatalln(err)
 	}
 
-	textbox = gebitenui.NewTextBox(20, 200, 12, textboxTex, fnt, 15.0, 0.0)
+	textbox = gebitenui.NewTextBox(20, 200, 12, textboxTex, fnt, 15.0, 0.0, func(newText string) {
+		fmt.Println(newText)
+	})
 }
 
 type Test struct {

@@ -9,6 +9,8 @@ import (
 	"github.com/hajimehoshi/ebiten/v2/text/v2"
 )
 
+type GTextboxOnChange func(newText string)
+
 // GTextbox centers text on the Y axis and accepts a text x/y offset
 type GTextbox struct {
 	text                     []rune
@@ -27,10 +29,11 @@ type GTextbox struct {
 	caretX                   float64
 	caretTex                 *ebiten.Image
 	caretCurrTickCount       int
+	onChange                 GTextboxOnChange
 }
 
 // NewTextBox creates a new GTextBox
-func NewTextBox(x, y float64, maxTextLen int, tex *ebiten.Image, font *GFont, textOffsetX, textOffsetY float64) *GTextbox {
+func NewTextBox(x, y float64, maxTextLen int, tex *ebiten.Image, font *GFont, textOffsetX, textOffsetY float64, onChange GTextboxOnChange) *GTextbox {
 	metrics := font.face.Metrics()
 	height := math.Max(metrics.XHeight, metrics.CapHeight)
 	ascent := metrics.HAscent
@@ -60,6 +63,7 @@ func NewTextBox(x, y float64, maxTextLen int, tex *ebiten.Image, font *GFont, te
 		tex:           tex,
 		caretTex:      caretTex,
 		caretX:        textOffsetX,
+		onChange:      onChange,
 	}
 }
 
@@ -76,6 +80,8 @@ func (gt *GTextbox) Update() {
 				gt.text = tmp
 				gt.caretPos += len(newText)
 			}
+
+			gt.onChange(string(gt.text))
 		}
 
 		if len(gt.text) != 0 {
@@ -92,6 +98,7 @@ func (gt *GTextbox) Update() {
 		if len(gt.text) > 0 && gt.caretPos > 0 && inpututil.IsKeyJustPressed(ebiten.KeyBackspace) {
 			gt.text = append(gt.text[:gt.caretPos-1], gt.text[gt.caretPos:]...)
 			gt.caretPos--
+			gt.onChange(string(gt.text))
 		}
 
 		if gt.caretPos > 0 && inpututil.IsKeyJustPressed(ebiten.KeyLeft) {
