@@ -28,7 +28,7 @@ func init() {
 		log.Fatalln(err)
 	}
 
-	btn, err = gebitenui.NewButton("Press Me!", 0, 20, btnTex, fnt, func() {
+	btn, err = gebitenui.NewButton("Press Me!", 275, 200, btnTex, fnt, func() {
 		log.Println("Hello!")
 	})
 	if err != nil {

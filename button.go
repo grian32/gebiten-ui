@@ -2,7 +2,6 @@ package gebiten_ui
 
 import (
 	"fmt"
-	"math"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
@@ -33,11 +32,8 @@ func NewButton(text string, x, y float64, tex *ebiten.Image, font *GFont, onClic
 		return nil, fmt.Errorf("string %s does not fit within texture", text)
 	}
 
-	metrics := font.face.Metrics()
-	height := math.Max(metrics.XHeight, metrics.CapHeight)
-
 	textX := (float64(texBounds.Dx()) - strWidth) / 2.0
-	textY := (float64(texBounds.Dy()) + strHeight + height) / 2.0
+	textY := (float64(texBounds.Dy()) - strHeight) / 2.0
 
 	// float to int can be expensive, probably micro, but might aswell
 	intX := int(x)
@@ -63,11 +59,8 @@ func NewButtonNoCheck(text string, x, y float64, tex *ebiten.Image, font *GFont,
 	strWidth, strHeight := font.MeasureString(text)
 	texBounds := tex.Bounds()
 
-	metrics := font.face.Metrics()
-	height := math.Max(metrics.XHeight, metrics.CapHeight)
-
 	textX := (float64(texBounds.Dx()) - strWidth) / 2.0
-	textY := (float64(texBounds.Dy()) + strHeight + height) / 2.0
+	textY := (float64(texBounds.Dy()) - strHeight) / 2.0
 
 	// float to int can be expensive, probably micro, but might aswell
 	intX := int(x)
@@ -105,7 +98,7 @@ func (gb *GButton) Draw(screen *ebiten.Image) {
 	op.DisableMipmaps = true
 
 	tOp := &text.DrawOptions{}
-	tOp.GeoM.Translate(gb.textPos.X, gb.textPos.Y)
+	tOp.GeoM.Translate(gb.x+gb.textPos.X, gb.y+gb.textPos.Y)
 
 	screen.DrawImage(
 		gb.tex,
