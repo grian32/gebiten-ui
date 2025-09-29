@@ -13,6 +13,7 @@ import (
 
 var btn *gebitenui.GButton
 var textbox *gebitenui.GTextbox
+var texBtn *gebitenui.GTextureButton
 
 func init() {
 	btnTex, _, err := ebitenutil.NewImageFromFile("../testdata/btn.png")
@@ -39,6 +40,10 @@ func init() {
 	textbox = gebitenui.NewTextBox(20, 200, 12, textboxTex, fnt, 15.0, 0.0, func(newText string) {
 		fmt.Println(newText)
 	})
+
+	texBtn = gebitenui.NewTextureButton(40, 70, btnTex, func() {
+		fmt.Println("pressed texture button")
+	})
 }
 
 type Test struct {
@@ -47,6 +52,7 @@ type Test struct {
 func (t *Test) Update() error {
 	btn.Update()
 	textbox.Update()
+	texBtn.Update()
 	return nil
 }
 
@@ -54,6 +60,7 @@ func (t *Test) Draw(screen *ebiten.Image) {
 	ebitenutil.DebugPrint(screen, "Hello, World!")
 	btn.Draw(screen)
 	textbox.Draw(screen)
+	texBtn.Draw(screen)
 }
 
 func (t *Test) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {

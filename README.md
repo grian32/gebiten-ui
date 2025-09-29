@@ -6,6 +6,7 @@
 
 - Common `GWidget` interface.
 - `GButton` with click handling and automatically centered label.
+- `GTextureButton`, a simple button that just registers clicks with no additional text drawing.
 - `GTextbox`, a single line textbox with focus, caret, text editing and y-axis centering.
 - `GFont`, a utility wrapper for drawing text.
 
