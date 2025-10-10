@@ -14,6 +14,8 @@ import (
 var btn *gebitenui.GButton
 var textbox *gebitenui.GTextbox
 var texBtn *gebitenui.GTextureButton
+var hoverTex *gebitenui.GHoverTexture
+var hoverTex2 *gebitenui.GHoverTexture
 
 func init() {
 	btnTex, _, err := ebitenutil.NewImageFromFile("../testdata/btn.png")
@@ -44,23 +46,30 @@ func init() {
 	texBtn = gebitenui.NewTextureButton(40, 70, btnTex, func() {
 		fmt.Println("pressed texture button")
 	})
+
+	hoverTex = gebitenui.NewHoverTexture(0, 360, 480, btnTex, "hovering", textboxTex, fnt)
+	hoverTex2 = gebitenui.NewHoverTexture(0, 0, 480, btnTex, "hovering", textboxTex, fnt)
 }
 
 type Test struct {
 }
 
 func (t *Test) Update() error {
-	btn.Update()
-	textbox.Update()
-	texBtn.Update()
+	//btn.Update()
+	//textbox.Update()
+	//texBtn.Update()
+	hoverTex.Update()
+	hoverTex2.Update()
 	return nil
 }
 
 func (t *Test) Draw(screen *ebiten.Image) {
 	ebitenutil.DebugPrint(screen, "Hello, World!")
-	btn.Draw(screen)
-	textbox.Draw(screen)
-	texBtn.Draw(screen)
+	//btn.Draw(screen)
+	//textbox.Draw(screen)
+	//texBtn.Draw(screen)
+	hoverTex.Draw(screen)
+	hoverTex2.Draw(screen)
 }
 
 func (t *Test) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {

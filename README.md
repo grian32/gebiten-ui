@@ -8,6 +8,7 @@
 - `GButton` with click handling and automatically centered label.
 - `GTextureButton`, a simple button that just registers clicks with no additional text drawing.
 - `GTextbox`, a single line textbox with focus, caret, text editing and y-axis centering.
+- `GHoverTexture`, a texture that displays a hover box(which contains some text and another texture) below the texture, and if not possible, above it.
 - `GFont`, a utility wrapper for drawing text.
 
 ## Usage

@@ -9,29 +9,44 @@ import (
 type GHoverTexture struct {
 	minX, minY           int
 	maxX, maxY           int
+	hoverY               float64
 	x, y                 float64
-	hoverMsg             string
-	hoverBg              *ebiten.Image
+	hoverTex             *ebiten.Image
 	shouldRenderHoverMsg bool
 	tex                  *ebiten.Image
 }
 
-func NewGHoverTexture(x, y float64, tex *ebiten.Image, hoverMsg string, font *GFont) *GHoverTexture {
-	textX, textY := font.MeasureString(hoverMsg)
+func NewHoverTexture(x, y, maxPosY float64, tex *ebiten.Image, hoverMsg string, hoverTex *ebiten.Image, font *GFont) *GHoverTexture {
+	var hoverY float64
 
-	bgTex := ebiten.NewImage(int(textX)+4, int(textY)+4)
-	bgTex.Fill(color.Black)
+	texHeight := float64(tex.Bounds().Dy())
+	hoverTexHeight := float64(hoverTex.Bounds().Dy())
+	hoverTexWidth := float64(hoverTex.Bounds().Dx())
+
+	belowY := y + texHeight
+	if belowY < maxPosY {
+		hoverY = belowY
+	} else {
+		hoverY = y - hoverTexHeight
+	}
+
+	textWidth, textHeight := font.MeasureString(hoverMsg)
+
+	font.Draw(hoverTex, hoverMsg, (hoverTexWidth-textWidth)/2.0, (hoverTexHeight-textHeight)/2.0, color.Black)
+
+	intX := int(x)
+	intY := int(y)
 
 	return &GHoverTexture{
-		minX:     int(x),
-		minY:     int(y),
-		maxX:     int(x) + tex.Bounds().Dx(),
-		maxY:     int(y) + tex.Bounds().Dy(),
+		minX:     intX,
+		minY:     intY,
+		maxX:     intX + tex.Bounds().Dx(),
+		maxY:     intY + tex.Bounds().Dy(),
 		x:        x,
 		y:        y,
 		tex:      tex,
-		hoverBg:  bgTex,
-		hoverMsg: hoverMsg,
+		hoverY:   hoverY,
+		hoverTex: hoverTex,
 	}
 }
 
@@ -40,6 +55,8 @@ func (ght *GHoverTexture) Update() {
 
 	if x >= ght.minX && x <= ght.maxX && y >= ght.minY && y <= ght.maxY {
 		ght.shouldRenderHoverMsg = true
+	} else if ght.shouldRenderHoverMsg {
+		ght.shouldRenderHoverMsg = false
 	}
 }
 
@@ -51,4 +68,9 @@ func (ght *GHoverTexture) Draw(screen *ebiten.Image) {
 		ght.tex,
 		op,
 	)
+	if ght.shouldRenderHoverMsg {
+		op := &ebiten.DrawImageOptions{}
+		op.GeoM.Translate(ght.x, ght.hoverY)
+		screen.DrawImage(ght.hoverTex, op)
+	}
 }
