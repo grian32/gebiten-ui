@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"image/color"
 	_ "image/png"
 	"log"
+	"strconv"
 
 	gebitenui "github.com/grian32/gebiten-ui"
 
@@ -16,6 +18,7 @@ var textbox *gebitenui.GTextbox
 var texBtn *gebitenui.GTextureButton
 var hoverTex *gebitenui.GHoverTexture
 var hoverTex2 *gebitenui.GHoverTexture
+var str string
 
 func init() {
 	btnTex, _, err := ebitenutil.NewImageFromFile("../testdata/btn.png")
@@ -47,8 +50,8 @@ func init() {
 		fmt.Println("pressed texture button")
 	})
 
-	hoverTex = gebitenui.NewHoverTexture(0, 360, 480, btnTex, "hovering", textboxTex, fnt)
-	hoverTex2 = gebitenui.NewHoverTexture(0, 0, 480, btnTex, "hovering", textboxTex, fnt)
+	hoverTex = gebitenui.NewHoverTexture(0, 360, 480, btnTex, &str, textboxTex, fnt)
+	hoverTex2 = gebitenui.NewHoverTexture(0, 0, 480, btnTex, &str, textboxTex, fnt)
 }
 
 type Test struct {
@@ -60,10 +63,13 @@ func (t *Test) Update() error {
 	//texBtn.Update()
 	hoverTex.Update()
 	hoverTex2.Update()
+	strNum, _ := strconv.ParseInt(str, 10, 16)
+	str = strconv.FormatInt(strNum+1, 10)
 	return nil
 }
 
 func (t *Test) Draw(screen *ebiten.Image) {
+	screen.Fill(color.White)
 	ebitenutil.DebugPrint(screen, "Hello, World!")
 	//btn.Draw(screen)
 	//textbox.Draw(screen)
