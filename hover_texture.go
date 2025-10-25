@@ -16,11 +16,12 @@ type GHoverTexture struct {
 	hoverTex             *ebiten.Image
 	hoverMsg             *string
 	hoverFont            *GFont
+	hoverTextColor       color.Color
 	shouldRenderHoverMsg bool
 	tex                  *ebiten.Image
 }
 
-func NewHoverTexture(x, y, maxPosY float64, tex *ebiten.Image, hoverMsg *string, hoverTex *ebiten.Image, font *GFont) *GHoverTexture {
+func NewHoverTexture(x, y, maxPosY float64, tex *ebiten.Image, hoverMsg *string, hoverTex *ebiten.Image, font *GFont, hoverTextColor color.Color) *GHoverTexture {
 	var hoverY float64
 
 	texHeight := float64(tex.Bounds().Dy())
@@ -37,17 +38,18 @@ func NewHoverTexture(x, y, maxPosY float64, tex *ebiten.Image, hoverMsg *string,
 	intY := int(y)
 
 	return &GHoverTexture{
-		minX:      intX,
-		minY:      intY,
-		maxX:      intX + tex.Bounds().Dx(),
-		maxY:      intY + tex.Bounds().Dy(),
-		x:         x,
-		y:         y,
-		tex:       tex,
-		hoverY:    hoverY,
-		hoverTex:  hoverTex,
-		hoverMsg:  hoverMsg,
-		hoverFont: font,
+		minX:           intX,
+		minY:           intY,
+		maxX:           intX + tex.Bounds().Dx(),
+		maxY:           intY + tex.Bounds().Dy(),
+		x:              x,
+		y:              y,
+		tex:            tex,
+		hoverY:         hoverY,
+		hoverTex:       hoverTex,
+		hoverMsg:       hoverMsg,
+		hoverFont:      font,
+		hoverTextColor: hoverTextColor,
 	}
 }
 
@@ -82,6 +84,6 @@ func (ght *GHoverTexture) Draw(screen *ebiten.Image) {
 		op.GeoM.Translate(ght.x, ght.hoverY)
 
 		screen.DrawImage(ght.hoverTex, op)
-		ght.hoverFont.Draw(screen, *ght.hoverMsg, ght.hoverTextX, ght.hoverTextY, color.Black)
+		ght.hoverFont.Draw(screen, *ght.hoverMsg, ght.hoverTextX, ght.hoverTextY, ght.hoverTextColor)
 	}
 }
