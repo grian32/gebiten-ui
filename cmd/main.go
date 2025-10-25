@@ -50,8 +50,8 @@ func init() {
 		fmt.Println("pressed texture button")
 	})
 
-	hoverTex = gebitenui.NewHoverTexture(0, 360, 480, btnTex, &str, textboxTex, fnt)
-	hoverTex2 = gebitenui.NewHoverTexture(0, 0, 480, btnTex, &str, textboxTex, fnt)
+	hoverTex = gebitenui.NewHoverTexture(0, 360, 480, btnTex, &str, textboxTex, fnt, color.Black)
+	hoverTex2 = gebitenui.NewHoverTexture(0, 0, 480, btnTex, &str, textboxTex, fnt, color.Black)
 }
 
 type Test struct {
