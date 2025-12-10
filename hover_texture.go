@@ -73,6 +73,7 @@ func (ght *GHoverTexture) Update() {
 
 func (ght *GHoverTexture) Draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
+	op.Filter = ebiten.FilterNearest
 	op.GeoM.Translate(ght.x, ght.y)
 
 	screen.DrawImage(
@@ -81,6 +82,7 @@ func (ght *GHoverTexture) Draw(screen *ebiten.Image) {
 	)
 	if ght.shouldRenderHoverMsg {
 		op := &ebiten.DrawImageOptions{}
+		op.Filter = ebiten.FilterNearest
 		op.GeoM.Translate(ght.x, ght.hoverY)
 
 		screen.DrawImage(ght.hoverTex, op)

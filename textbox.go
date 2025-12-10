@@ -124,17 +124,20 @@ func (gt *GTextbox) Update() {
 
 func (gt *GTextbox) Draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
+	op.Filter = ebiten.FilterNearest
 	op.GeoM.Translate(gt.x, gt.y)
 	op.DisableMipmaps = true
 
 	screen.DrawImage(gt.tex, op)
 
 	tOp := &text.DrawOptions{}
+	tOp.Filter = ebiten.FilterNearest
 	tOp.GeoM.Translate(gt.x+gt.textX, gt.y+gt.textY)
 	text.Draw(screen, string(gt.text), gt.font.face, tOp)
 
 	if gt.focused && gt.caretCurrTickCount > 15 {
 		cOp := &ebiten.DrawImageOptions{}
+		cOp.Filter = ebiten.FilterNearest
 		// TODO: maybe move to update
 		var usedYCoord float64
 		if gt.textY == 0 {

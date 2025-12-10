@@ -93,11 +93,13 @@ func (gb *GButton) Update() {
 // Draw draws the button and attempts to center label within texture
 func (gb *GButton) Draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
+	op.Filter = ebiten.FilterNearest
 
 	op.GeoM.Translate(gb.x, gb.y)
 	op.DisableMipmaps = true
 
 	tOp := &text.DrawOptions{}
+	tOp.Filter = ebiten.FilterNearest
 	tOp.GeoM.Translate(gb.x+gb.textPos.X, gb.y+gb.textPos.Y)
 
 	screen.DrawImage(

@@ -47,6 +47,7 @@ func (gtb *GTextureButton) Update() {
 func (gtb *GTextureButton) Draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
 
+	op.Filter = ebiten.FilterNearest
 	op.GeoM.Translate(gtb.x, gtb.y)
 	op.DisableMipmaps = true
 
