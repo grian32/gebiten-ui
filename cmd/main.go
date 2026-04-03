@@ -18,7 +18,9 @@ var textbox *gebitenui.GTextbox
 var texBtn *gebitenui.GTextureButton
 var hoverTex *gebitenui.GHoverTexture
 var hoverTex2 *gebitenui.GHoverTexture
+var dynHoverTex *gebitenui.GDynHoverTexture
 var str string
+var currHoverX, currHoverY, tick int
 
 func init() {
 	btnTex, _, err := ebitenutil.NewImageFromFile("../testdata/btn.png")
@@ -52,17 +54,24 @@ func init() {
 
 	hoverTex = gebitenui.NewHoverTexture(0, 360, 480, btnTex, &str, textboxTex, fnt, color.Black)
 	hoverTex2 = gebitenui.NewHoverTexture(0, 0, 480, btnTex, &str, textboxTex, fnt, color.Black)
+	dynHoverTex = gebitenui.NewDynHoverTexture(480, btnTex, &str, textboxTex, fnt, color.Black)
 }
 
 type Test struct {
 }
 
 func (t *Test) Update() error {
+	tick++
 	//btn.Update()
 	//textbox.Update()
 	//texBtn.Update()
-	hoverTex.Update()
-	hoverTex2.Update()
+	// hoverTex.Update()
+	// hoverTex2.Update()
+	if tick%100 == 0 {
+		currHoverX += 10
+		currHoverY += 10
+	}
+	dynHoverTex.Update(float64(currHoverX), float64(currHoverY))
 	strNum, _ := strconv.ParseInt(str, 10, 16)
 	str = strconv.FormatInt(strNum+1, 10)
 	return nil
@@ -74,8 +83,9 @@ func (t *Test) Draw(screen *ebiten.Image) {
 	//btn.Draw(screen)
 	//textbox.Draw(screen)
 	//texBtn.Draw(screen)
-	hoverTex.Draw(screen)
-	hoverTex2.Draw(screen)
+	// hoverTex.Draw(screen)
+	// hoverTex2.Draw(screen)
+	dynHoverTex.Draw(screen, float64(currHoverX), float64(currHoverY))
 }
 
 func (t *Test) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
