@@ -86,6 +86,6 @@ func (ght *GHoverTexture) Draw(screen *ebiten.Image, hoverXOffset, hoverYOffset 
 		op.GeoM.Translate(ght.x+hoverXOffset, ght.hoverY+hoverYOffset)
 
 		screen.DrawImage(ght.hoverTex, op)
-		ght.hoverFont.Draw(screen, *ght.hoverMsg, ght.hoverTextX, ght.hoverTextY, ght.hoverTextColor)
+		ght.hoverFont.Draw(screen, *ght.hoverMsg, ght.hoverTextX+hoverXOffset, ght.hoverTextY+hoverYOffset, ght.hoverTextColor)
 	}
 }
