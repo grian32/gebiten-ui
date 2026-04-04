@@ -71,7 +71,7 @@ func (ght *GHoverTexture) Update() {
 	}
 }
 
-func (ght *GHoverTexture) Draw(screen *ebiten.Image, hoverXOffset, hoverYOffset float64) {
+func (ght *GHoverTexture) Draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
 	op.Filter = ebiten.FilterNearest
 	op.GeoM.Translate(ght.x, ght.y)
@@ -83,9 +83,9 @@ func (ght *GHoverTexture) Draw(screen *ebiten.Image, hoverXOffset, hoverYOffset 
 	if ght.shouldRenderHoverMsg {
 		op := &ebiten.DrawImageOptions{}
 		op.Filter = ebiten.FilterNearest
-		op.GeoM.Translate(ght.x+hoverXOffset, ght.hoverY+hoverYOffset)
+		op.GeoM.Translate(ght.x, ght.hoverY)
 
 		screen.DrawImage(ght.hoverTex, op)
-		ght.hoverFont.Draw(screen, *ght.hoverMsg, ght.hoverTextX+hoverXOffset, ght.hoverTextY+hoverYOffset, ght.hoverTextColor)
+		ght.hoverFont.Draw(screen, *ght.hoverMsg, ght.hoverTextX, ght.hoverTextY, ght.hoverTextColor)
 	}
 }
