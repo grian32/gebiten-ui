@@ -85,7 +85,7 @@ func (t *Test) Draw(screen *ebiten.Image) {
 	//texBtn.Draw(screen)
 	// hoverTex.Draw(screen)
 	// hoverTex2.Draw(screen)
-	dynHoverTex.Draw(screen, float64(currHoverX), float64(currHoverY))
+	dynHoverTex.Draw(screen, float64(currHoverX), float64(currHoverY), 0, 0)
 }
 
 func (t *Test) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
